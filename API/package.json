@@ -1,0 +1,21 @@
+{
+  "name": "chatbotapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "puppeteer": "^10.4.0",
+    "socket.io": "^4.3.2",
+    "whatsapp-web.js": "^1.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
