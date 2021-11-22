@@ -15,15 +15,6 @@ Public Class Form1
     Const msgPrefixLength As Integer = 4
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'PictureBox3.Image = My.Resources.Loading
-        'Control.CheckForIllegalCrossThreadCalls = False
-
-        'client = New SocketIO(url, New SocketIOOptions)
-
-        'InitSocketOn(client)
-        'client.ConnectAsync()
-
-        'connectToDB()
         Initialize()
     End Sub
 
@@ -45,10 +36,9 @@ Public Class Form1
     End Sub
     Private Function GetDataFromDatabase(msgBody As String)
         Dim msgReplay As String
-        'Test DB
+
         If msgBody.Length > msgPrefixLength And msgBody.StartsWith("ISBN") Then
             Dim isbnCode As String = msgBody.Substring(msgPrefixLength)
-            'MessageBox.Show(isbnCode)
             da = New OdbcDataAdapter("SELECT peri_location.location, peri_location.nama, peri_location.nick, peri_location.cabang, peri_stock.stock
             FROM ((peri_stock
             INNER JOIN peri_location ON peri_location.location = peri_stock.location))
@@ -60,13 +50,6 @@ Public Class Form1
             If ds.Tables("peri_stock").Rows.Count = 0 Then 'ISBN not found
                 msgReplay = String.Format("*Mohon Maaf, ISBN tidak ditemukan*")
             Else
-                ' MessageBox.Show(ds.Tables("peri_stock").Rows.Count)
-                'MessageBox.Show(ds.Tables("peri_stock").Rows(0).Item(1).ToString())
-                'MessageBox.Show(ds.Tables("peri_stock").Rows(0).Item(3).ToString())
-                'MessageBox.Show(ds.Tables("peri_stock").Rows(0).Item(4).ToString())
-                'MessageBox.Show(ds.Tables("peri_stock").Rows(0).Item(0).ToString())
-
-                'Bikin message
                 Dim listLocationInfo As New List(Of String)
                 Dim i As Integer
 
@@ -104,9 +87,6 @@ Public Class Form1
                                PictureBox3.Image = My.Resources.rsz_peripluscom
                            End Sub)
         client.On("messageBody", Sub(response)
-                                     'MessageBox.Show(response.ToString)
-                                     'client.EmitAsync("replyMessage", response.GetValue(0).ToString,
-                                     'response.GetValue(1).ToString)
                                      Dim replayMessage As String = GetDataFromDatabase(response.GetValue(1).ToString)
                                      client.EmitAsync("replyMessage", replayMessage)
                                  End Sub)
@@ -114,11 +94,7 @@ Public Class Form1
                                    client.DisconnectAsync()
                                    PictureBox3.Image = My.Resources.Loading
                                    client.ConnectAsync()
-                                   'Initialize()
                                End Sub)
-    End Sub
-    Private Sub LogOut(client As SocketIO)
-        client.EmitAsync("loggedOut", "Client was logged out")
     End Sub
     Private Sub Initialize()
         PictureBox3.Image = My.Resources.Loading
