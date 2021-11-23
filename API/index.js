@@ -29,6 +29,9 @@ io.on('connection', function (socket) {
             headless: true
         },
         session: sessionCfg,
+        authTimeoutMs: 100000,
+        qrRefreshIntervalMs: 100000,
+        qrTimeoutMs: 100000
     });
 
     console.log("test")
